@@ -7,6 +7,7 @@ const Song = sequelize.define('song', {
 })
 const express = require('express');
 const app = express();
+const path = require('path');
 app.get('/api/songs',async (req,res,next) =>{
     try{
         res.send(await Song.findAll());
@@ -15,6 +16,9 @@ app.get('/api/songs',async (req,res,next) =>{
         next(ex);
     }
 });
+
+//phase 3:add route
+app.get('/', (req,res) => res.sendFile(path.join(__dirname,'index.html')));
 const start = async() => {
     try{
         await sequelize.sync({force: true});
