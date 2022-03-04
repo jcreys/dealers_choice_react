@@ -3,13 +3,45 @@
     <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.js" integrity="sha512-MNW6IbpNuZZ2VH9ngFhzh6cUt8L/0rSVa60F8L22K1H72ro4Ki3M/816eSDLnhICu7vwH/+/yb8oB3BtBLhMsA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   </head>
   <body>
     <div id='root'></div>
     <script type='text/babel'>
+        class App extends React.Component{
+            constructor(){
+                super();
+                this.state = {
+                    songs: []
+                };
+            }
+            async componentDidMount(){
+                const response = await axios.get('/api/songs');
+                const songs = response.data;
+                console.log(songs);
+                this.setState( {songs});
+            }
+            render(){
+                const songs = this.state.songs;
+                return(
+                    <div>
+                        <h1>Artists({songs.length})</h1>    
+                        <ul>
+                            {
+                                songs.map( song => {
+                                    return (
+                                        <li>{ song.name }</li>
+                                    );
+                                })
+                            }
+                        </ul>
+                    </div>
+                );
+            }   
+        }
       const root = document.querySelector('#root');
-      ReactDOM.render(<hr />, root);
+      ReactDOM.render(<App />, root);
     </script>
   </body>
 </html>
